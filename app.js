@@ -40,8 +40,14 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users/posts", (req, res) => {
-  let sendingPosts = posts;
-  res.json(sendingPosts);
+  Posts.find()
+    .sort({ createdAt: -1 })
+    .then((posts) => {
+      res.json(posts);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.post("/posts/create", (req, res) => {
