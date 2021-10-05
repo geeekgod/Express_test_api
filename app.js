@@ -1,6 +1,5 @@
 const express = require("express");
 const morgan = require("morgan");
-const posts = require("./data/posts");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const postRoutes = require("./routes/postRoutes");
