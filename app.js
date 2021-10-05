@@ -2,25 +2,59 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const posts = require("./data/posts");
+const Posts = require("./models/posts");
+const bodyParser = require("body-parser");
 const app = express();
+
+// db
+const dbURI =
+  "mongodb+srv://rishabh_singh:Rekha12345678@cluster0.yx8a6.mongodb.net/Express-Test-Api?retryWrites=true&w=majority";
 
 // port
 const port = process.env.PORT || 3000;
 
-app.listen(port);
+mongoose
+  .connect(dbURI)
+  .then((res) => {
+    // listen for requests
+
+    app.listen(port);
+    console.log("connected to db", res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+// middlewares
 app.use(express.static("public"));
 app.use(express.urlencoded());
+app.use(express.json())
 app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   res.json({
-    name: "Hello",
+    name: "Welcome to Express Test Api",
   });
 });
 
 app.get("/users/posts", (req, res) => {
   let sendingPosts = posts;
   res.json(sendingPosts);
+});
+
+app.post("/posts/create", (req, res) => {
+  console.log(req.body);
+  if (req.body) {
+    const post = new Posts(req.body);
+    post
+      .save()
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => res.json(err));
+  } else {
+    res.json({ error: "Please send valid data" });
+  }
 });
 
 app.get("/users/posts/:id", (req, res) => {
