@@ -67,12 +67,12 @@ app.post("/posts/create", (req, res) => {
 });
 
 app.get("/users/posts/:id", (req, res) => {
-  const id = req.params.id;
-  let sendingPosts = posts.find((post) => post.id === parseInt(id));
-  if (sendingPosts) {
-    res.json(sendingPosts);
-  } else {
-    res.status(404);
-    res.json({ error: `Post with id ${id} not found` });
-  }
+  const id = parseInt(req.params.id);
+  Posts.find({id: id})
+    .then((blog) => {
+      res.json(blog);
+    })
+    .catch((err) => {
+      res.json({ error: err });
+    });
 });
