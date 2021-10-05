@@ -68,11 +68,17 @@ app.post("/posts/create", (req, res) => {
 
 app.get("/users/posts/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  Posts.find({id: id})
-    .then((blog) => {
-      res.json(blog);
+  Posts.find({ id: id })
+    .then((post) => {
+      if (post[0]) {
+        res.json(post[0]);
+      } else {
+        rest.status(404);
+        res.json({ watch_out: `Posts not found with id: ${id}` });
+      }
     })
     .catch((err) => {
-      res.json({ error: err });
+      res.status(404);
+      res.json({ watch_out: `Posts not found with id: ${id}`, error: err });
     });
 });
