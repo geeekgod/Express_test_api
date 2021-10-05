@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 const posts = require("./data/posts");
 const Posts = require("./models/posts");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
 
@@ -26,9 +27,10 @@ mongoose
   });
 
 // middlewares
+app.use(cors());
 app.use(express.static("public"));
 app.use(express.urlencoded());
-app.use(express.json())
+app.use(express.json());
 app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
