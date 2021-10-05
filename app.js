@@ -46,6 +46,7 @@ app.get("/users/posts", (req, res) => {
 
 app.post("/posts/create", (req, res) => {
   console.log(req.body);
+  console.log(req.headers);
   if (req.body) {
     const post = new Posts(req.body);
     post
